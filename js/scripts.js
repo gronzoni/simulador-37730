@@ -137,3 +137,17 @@ window.onload = function(){
     renderCarrito()
   }
 }
+
+let app = document.getElementById('typewriter');
+ 
+let typewriter = new Typewriter(app, {
+  loop: true,
+  delay: 75,
+});
+ 
+typewriter
+  .pauseFor(2500)
+  .typeString('Si haces tu pedido de lunes a viernes antes de las 21hs. tenes un 20% OFF')
+  .pauseFor(200)
+  .deleteChars(10)
+  .start();
