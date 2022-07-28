@@ -1,5 +1,7 @@
 const Clickbutton = document.querySelectorAll('.button')
-const tbody = document.querySelector('.tbody')
+const tbodyCarrito = document.querySelector('.tbodyCarrito')
+const tbodyComentarios = document.querySelector('.tbodyComentarios')
+
 let carrito = []
 
 Clickbutton.forEach(btn => {
@@ -34,7 +36,7 @@ function addItemCarrito(newItem){
   }, 2000)
     alert.classList.remove('hide')
 
-  const InputElemnto = tbody.getElementsByClassName('input__elemento')
+  const InputElemnto = tbodyCarrito.getElementsByClassName('input__elemento')
   for(let i =0; i < carrito.length ; i++){
     if(carrito[i].title.trim() === newItem.title.trim()){
       carrito[i].cantidad ++;
@@ -51,8 +53,33 @@ function addItemCarrito(newItem){
 } 
 
 
+function renderInicio(){
+  fetch('https://jsonplaceholder.typicode.com/posts/1/comments')
+.then(response => response.json())
+.then(json => {
+  tbodyComentarios.innerHTML = '';
+  json.map(item => {
+    const tr = document.createElement('tr')
+      tr.classList.add('ItemComentario')
+      const Content = `
+      <th scope="row">${item.name} </th>
+      <td class="table__price"><p>${item.body}</p></td>
+    
+      `
+      tr.innerHTML = Content;
+      tbodyComentarios.append(tr)
+  })
+
+  console.log(json);
+}
+);
+
+
+
+}
+
 function renderCarrito(){
-  tbody.innerHTML = ''
+  tbodyCarrito.innerHTML = ''
   carrito.map(item => {
     const tr = document.createElement('tr')
     tr.classList.add('ItemCarrito')
@@ -71,7 +98,7 @@ function renderCarrito(){
     
     `
     tr.innerHTML = Content;
-    tbody.append(tr)
+    tbodyCarrito.append(tr)
 
     tr.querySelector(".delete").addEventListener('click', removeItemCarrito)
     tr.querySelector(".input__elemento").addEventListener('change', sumaCantidad)
@@ -134,7 +161,8 @@ window.onload = function(){
   const storage = JSON.parse(localStorage.getItem('carrito'));
   if(storage){
     carrito = storage;
-    renderCarrito()
+    renderCarrito();
+    renderInicio();
   }
 }
 
